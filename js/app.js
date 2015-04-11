@@ -17,32 +17,18 @@ function removeClass(e, c) {
 function $(id) {
 	return document.getElementById(id);
 }
+
 var cache,
 	canvas,
 	ctx,
-	cWidth = 320,
-	cHeight = 480,
+	cWidth = window.innerWidth,
+	cHeight = window.innerHeight,
 	radius = 5,
 	x1, y1, x2, y2, flag;
 			
 	window.onload = function() {
-		
-		if (navigator.appVersion.indexOf('iPhone OS ') < 0) {
-			$("noIphone").style.display = 'block';
-			$("noStandalone").style.display = 'none';
-			$("main").style.display = 'none';
-		} else {
-			if (window.navigator.standalone) {
-				$("noIphone").style.display = 'none';
-				$("noStandalone").style.display = 'block';
-				$("main").style.display = 'none';
-			} else {
-				$("noIphone").style.display = 'none';
-				$("noStandalone").style.display = 'none';
-				main();
-				reOrient();
-			}
-		}
+		main();
+		reOrient();
 		
 	}
 	
@@ -83,33 +69,36 @@ var cache,
 		canvas.ongesturechange = function(e) {
 			e.preventDefault();
 		}
-		
-		$("help").ontouchstart = function(e) {
-			addClass($("help_panel"), "pZoom");
-			removeClass($("help_panel"), "hide");
-			addClass($("help_panel"), "show");
-			removeClass($("help_panel_mark"), "hide");
-			addClass($("help_panel_mark"), "show");
-			removeClass($("help"), "help_out");
-			addClass($("help"), "help_over");
+		var tip = $("help_panel"),
+			helpEle = $("help"),
+			mark = $("help_panel_mark");
+		helpEle.ontouchstart = function(e) {
+
+			addClass(tip, "pZoom");
+			removeClass(tip, "hide");
+			addClass(tip, "show");
+			removeClass(mark, "hide");
+			addClass(mark, "show");
+			removeClass(helpEle, "help_out");
+			addClass(helpEle, "help_over");
 		}
 		
-		$("help").ontouchend = function(e) {
-			removeClass($("help"), "help_over");
-			addClass($("help"), "help_out");
+		helpEle.ontouchend = function(e) {
+			removeClass(helpEle, "help_over");
+			addClass(helpEle, "help_out");
 		}
 		
 		
-		$("help_panel").ontouchmove = function(e) {
+		tip.ontouchmove = function(e) {
 			e.preventDefault();
 		};
 		
-		$("help_panel_mark").ontouchstart = function(e) {
-			removeClass($("help_panel"), "pZoom");
-			removeClass($("help_panel"), "show");
-			addClass($("help_panel"), "hide");
-			addClass($("help_panel_mark"), "show");
-			addClass($("help_panel_mark"), "hide");
+		mark.ontouchstart = function(e) {
+			removeClass(tip, "pZoom");
+			removeClass(tip, "show");
+			addClass(tip, "hide");
+			addClass(mark, "show");
+			addClass(mark, "hide");
 		}	
 		
 	}
@@ -159,14 +148,14 @@ var cache,
 	function reOrient() {
 		orientation = window.orientation;
 		if (orientation == 90 || orientation == -90) {
-			cWidth = 480;
-			cHeight = 320;
+			cWidth = window.innerWidth;
+			cHeight = window.innerHeight;
 			canvas.width = cWidth;
 			canvas.height = cHeight; 
 			toHori();
 		} else {
-			cWidth = 320;
-			cHeight = 480;
+			cWidth = window.innerWidth;
+			cHeight = window.innerHeight;
 			canvas.width = cWidth;
 			canvas.height = cHeight;
 			toVert();
@@ -178,8 +167,8 @@ var cache,
 			result = $("result"),
 			help = $("help"),
 			help_panel = $("help_panel");
-		removeClass(bg, "bg_hori");
-		addClass(bg, "bg_vert");
+		//removeClass(bg, "bg_hori");
+		//addClass(bg, "bg_vert");
 		removeClass(result, "result_hori");
 		addClass(result, "result_vert");
 		removeClass(help, "help_hori");
@@ -193,8 +182,8 @@ var cache,
 			result = $("result"),
 			help = $("help"),
 			help_panel = $("help_panel");
-		removeClass(bg, "bg_vert");
-		addClass(bg, "bg_hori");
+		//removeClass(bg, "bg_vert");
+		//addClass(bg, "bg_hori");
 		removeClass(result, "result_vert");
 		addClass(result, "result_hori");
 		removeClass(help, "help_vert");
